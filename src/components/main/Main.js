@@ -4,7 +4,8 @@ import Navhead from "../../components/nav/Navhead";
 
 import { BrowserRouter as Router, Route,Switch } from "react-router-dom"
 import Home from '../../components/home/Home'
-import Adoption from '../../components/adoption/Adoption'
+
+import Adoption_Two  from '../../components/adoption_two/Adoption_two'
 
 class Main extends Component {
   render() {
@@ -19,7 +20,7 @@ class Main extends Component {
           <Switch> 
              
             <Route exact={true} path="/" component={Home} />
-            <Route path="/adoption" component={Adoption} />
+            <Route path="/adoption" component={Adoption_Two} />
           </Switch>
             
           <style>
