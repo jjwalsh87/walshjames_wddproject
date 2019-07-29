@@ -1,31 +1,53 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
-import CardGroup from 'react-bootstrap/CardGroup'
-import NotFound from '../../imgs/imgNotFound.png'
-
+import NotFound from '../../imgs/imgNotFound.png';
 
 const AdoptionList = props => {
-    const options = props.results.animals;
-   
+	const options = props.results.animals;
 
 	const listItems = options.map(options => (
         
-        <Card style={{width:'12rem'}} key={options.id}>
-            {options.photos.length > 0 ?( 
-            <Card.Img variant="top"  src={options.photos[0].full} alt={NotFound} style={{width:'100%',height:'15vw', objectFit: 'cover'}}/>):null}
+		<Card
+			className='card mx-3 my-3 '
+			style={{ maxWidth: '18rem' }}
+			key={options.id}>
+			{options.photos.length > 0 ? (
+				<Card.Img
+					className='img-fluid'
+					variant='top'
+					src={options.photos[0].full}
+					alt={NotFound}
+					
+					style={{
+						height: '280px',
+						width: '100%',
+						display: 'block',
+						objectFit: 'fill'
+					}}
+				/>
+			) : null}
 
-            <Card.Body>
-                <Card.Title>{options.name}</Card.Title>
-                <Card.Subtitle>{options.age}        {options.gender}</Card.Subtitle>
-            </Card.Body>
-        </Card>
+			<Card.Body className='card-body'>
+				<Card.Title className='card-title'>{options.name}</Card.Title>
+				<Card.Subtitle className='card-text  '>
+					{options.age} {options.gender}
+				</Card.Subtitle>
+                <Card.Text className='align-bottom float-right'>
+                    {options.contact.address.city}, {options.contact.address.state}
+                </Card.Text>
+			</Card.Body>
+		</Card>
+        
 	));
 	return (
-        <div className = "row">
-            
-          {listItems}
-          
-        </div>
+		<div>
+			<div className='row'>
+				<div className='col' />
+				<div className='col' />
+				<div className='col' />
+			</div>
+			<div className='row justify-content-center pt-5'>{listItems}</div>
+		</div>
 	);
 };
 

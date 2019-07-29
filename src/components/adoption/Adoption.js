@@ -53,7 +53,7 @@ class Adoption extends Component {
     return (
       <Container fluid >
         <Form onSubmit={this.handleSubmit}>
-          <Row>
+          <Row className='justify-content-center'>
             <Col md="4">
             <label >
               Select Breed:
