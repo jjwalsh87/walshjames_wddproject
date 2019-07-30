@@ -29,12 +29,17 @@ class Adoption_Two extends Component {
 
 	componentWillMount() {
 		this.loadData();
+		const breedsData = localStorage.getItem('breedsData') === 'true';
+		localStorage.getItem(breedsData)
 	}
 
 	loadData() {
 		client.animalData
 			.breeds('dog')
 			.then(response => this.setState({ breeds: response.data.breeds }))
+			.then(()=>{if(localStorage.getItem('breedsData')===null){
+				localStorage.setItem('breedsData', JSON.stringify(this.state.breeds))
+			}})
 			.catch(error => {
 				console.log(error);
 			});
