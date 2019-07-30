@@ -16,8 +16,7 @@ const AdoptionList = props => {
 					className='img-fluid'
 					variant='top'
 					src={options.photos[0].full}
-					alt={NotFound}
-					
+					alt={'NotFound'}
 					style={{
 						height: '280px',
 						width: '100%',
@@ -25,7 +24,19 @@ const AdoptionList = props => {
 						objectFit: 'fill'
 					}}
 				/>
-			) : null}
+			) : 				<Card.Img
+					className='img-fluid'
+					variant='top'
+					src={NotFound}
+					alt={'NotFound'}
+					
+					style={{
+						height: '280px',
+						width: '100%',
+						display: 'block',
+						objectFit: 'fill'
+					}}
+				/>}
 
 			<Card.Body className='card-body'>
 				<Card.Title className='card-title'>{options.name}</Card.Title>
