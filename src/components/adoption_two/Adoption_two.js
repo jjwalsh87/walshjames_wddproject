@@ -3,6 +3,9 @@ import axios from 'axios'
 import AdoptionList from '../adoptionList/AdoptionList';
 import Form from 'react-bootstrap/Form';
 import { Client } from '@petfinder/petfinder-js';
+import CircularProgress from "@material-ui/core/CircularProgress";
+
+
 
 const client = new Client({
 	apiKey: 'uKX6d6UO4fV4VN9ujlSAFSOjCC2zXyG0tZShjTzSTaqhOM4XV2',
@@ -92,7 +95,14 @@ class Adoption_Two extends Component {
 				});
 				this.getCity()
 				this.reset();
-				
+				return(
+					        <CircularProgress
+          style={{
+            width: 22,
+            height: 22
+          }}
+        />
+				)
 			}, 2000);
 		} else {
 			
@@ -181,7 +191,7 @@ class Adoption_Two extends Component {
 		
 		return (
 			<div>
-				<h1 >We found {total} {value}'s with in {distance}mi from {city}, {state} </h1>
+				<h1 >We found {total} dogs around {city}, {state} </h1>
 			</div>
 		)
 	
