@@ -3,6 +3,7 @@ import axios from 'axios'
 import AdoptionList from '../adoptionList/AdoptionList';
 import Form from 'react-bootstrap/Form';
 import { Client } from '@petfinder/petfinder-js';
+
 const client = new Client({
 	apiKey: 'uKX6d6UO4fV4VN9ujlSAFSOjCC2zXyG0tZShjTzSTaqhOM4XV2',
 	secret: 'hFwZZQVI72cIXOoYPGbqOSCV68qdrtD6pMYpXQ0A'
@@ -19,7 +20,8 @@ class Adoption_Two extends Component {
 			zip: '',
 			address: null,
 			distance: '',
-			results: null
+			results: null,
+			parsed: null
 		};
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,13 +30,24 @@ class Adoption_Two extends Component {
 	}
 
 	componentWillMount() {
+		const breedsData = localStorage.getItem('breedsData') === 'true';
+		
+		if(breedsData){
+			localStorage.getItem(breedsData)
+			this.setState({breeds: breedsData})
+		}else
+
 		this.loadData();
+
 	}
 
 	loadData() {
 		client.animalData
 			.breeds('dog')
 			.then(response => this.setState({ breeds: response.data.breeds }))
+			.then(()=>{if(localStorage.getItem('breedsData')===null){
+				localStorage.setItem('breedsData', JSON.stringify(this.state.breeds))
+			}})
 			.catch(error => {
 				console.log(error);
 			});
@@ -79,6 +92,7 @@ class Adoption_Two extends Component {
 				});
 				this.getCity()
 				this.reset();
+				
 			}, 2000);
 		} else {
 			
@@ -95,7 +109,9 @@ class Adoption_Two extends Component {
 		) {
 			this.getSearch();
 			this.getCity();
+			
 			this.toggleActive();
+			
 			
 		} else {
 			alert('Missing search inputs');
@@ -105,13 +121,43 @@ class Adoption_Two extends Component {
 	}
 	getCity(){
 		
-		axios.get('https://maps.googleapis.com/maps/api/geocode/json?address='+this.state.zip+'&key=AIzaSyDipzuIDTIRP-ZQzIBI-tAr5hLD2T0n1tQ')
+		axios.get('https://maps.googleapis.com/maps/api/geocode/json?address='+this.state.zip+'&key=AIzaSyA-SBoup2C5ybGCwC66tp9ln9_XMODxxRA')
 		.then(resp=>{this.setState({address:resp.data})})
 		.catch(err=>{
 			console.log(err)
-			console.log(err.resp.data.error)
+			//console.log(err.resp.data.error)
+		}).then(()=>{
+			let parsed = []
+			if(this.state.address !== null){
+				let res = this.state.address
+			for(let i=0; i< res.results[0].address_components.length; i++){
+				parsed.push(res.results[0].address_components[i].short_name)
+				
+				
+			}
+				console.log(parsed)
+				this.setState({parsed: parsed})
+				
+			}else(console.log('nothing'))
 		})
-		.then(console.log(this.state.address))
+		
+	
+		
+	}
+	parseData(){
+			let parsed = []
+		if(this.state.address !== null){
+			let res = this.state.address
+		for(let i=0; i< res.results[0].address_components.length; i++){
+			parsed.push(res.results[0].address_components[i].short_name)
+			
+			
+		}
+			console.log(parsed)
+			this.setState({parsed: parsed})
+			
+		}else(console.log('nothing'))
+		
 	}
 	handleZipChange(event) {
 		this.setState({ zip: event.target.value });
@@ -125,6 +171,21 @@ class Adoption_Two extends Component {
 	reset() {
 		this.myFormRef.reset();
 	}
+	textHeader(){
+		const total= this.state.results.pagination.total_count;
+		const value= this.state.value;
+		const distance= this.state.distance;
+		const city = this.state.parsed[1];
+		const state= this.state.parsed[2]
+
+		
+		return (
+			<div>
+				<h1 >We found {total} {value}'s with in {distance}mi from {city}, {state} </h1>
+			</div>
+		)
+	
+}
 
 	render() {
 		if (!this.state.breeds) {
@@ -137,7 +198,9 @@ class Adoption_Two extends Component {
 				{breeds.name}
 			</option>
 		));
-
+		
+			//console.log(this.state.parsed)
+			//console.log(this.state.results)
 		return (
 			<div className='container-fluid w-100 mt-3'>
 				<div className='row justify-content-center'>
@@ -148,6 +211,8 @@ class Adoption_Two extends Component {
 						<div className='col-xs px-1'>
 							<select className='form-control' onChange={this.handleDisChange}>
 								<option value=''>Select distance</option>
+								<option value='10'>10 mi</option>
+								<option value='25'>25 mi</option>
 								<option value='50'>50 mi</option>
 								<option value='100'>100 mi</option>
 								<option value='200'>200 mi</option>
@@ -185,11 +250,16 @@ class Adoption_Two extends Component {
 						</div>
 					</Form>
 				</div>
-				<div className='container w-100 mt-5' style={{ background: '#ffffff' }}>
-
+				<div className='container w-100 mt-5 shadow-lg' style={{ background: '#ffffff' }}>
+				{!this.state.isHidden &&  (
+							
+							this.textHeader()
+							
+						)}
 					
-					{!this.state.isHidden && (
-							<AdoptionList results={this.state.results} city={this.state.city} />
+					{!this.state.isHidden &&  (
+							
+							<AdoptionList results={this.state.results} city={this.state.address} />
 						)}
 
 					

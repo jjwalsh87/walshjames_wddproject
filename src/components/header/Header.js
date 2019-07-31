@@ -7,7 +7,7 @@ class Header extends Component {
 		return (
 			<div style={styles.logo}>
 				<div className='col-4 pb-3 pt-3'>
-					<Image src={Logo} fluid />
+					<Image src={Logo} alt='NotFound' style={{width:'30vw'}} fluid  />
 				</div>
 			</div>
 		);
@@ -17,6 +17,7 @@ export default Header;
 const styles = {
 	logo: {
 		backgroundColor: '#F3EBDE',
-		height: '100%'
+		height: '100%',
+		
 	}
 };
