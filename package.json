@@ -9,6 +9,7 @@
     "fetch-jsonp": "^1.1.3",
     "holderjs": "^2.9.6",
     "jquery": "^3.4.1",
+    "parse-google-address": "^1.0.4",
     "pet-finder-api": "^1.0.1",
     "petfinder": "^0.1.1",
     "popper.js": "^1.15.0",
