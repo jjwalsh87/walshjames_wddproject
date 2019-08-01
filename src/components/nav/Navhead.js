@@ -7,6 +7,7 @@ import { NavLink } from "react-router-dom";
 class Navhead extends Component {
   render() {
     return (
+ 
       <Navbar collapseOnSelect expand="md" className="navbar">
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 

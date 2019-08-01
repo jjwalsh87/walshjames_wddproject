@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import Image from 'react-bootstrap/Image';
-import Logo from '../../imgs/logoNobg.png';
+import Logo from '../../imgs/adoptopiaBgWt.png';
 
 class Header extends Component {
 	render() {
 		return (
 			<div style={styles.logo}>
 				<div className='col-4 pb-3 pt-3'>
-					<Image src={Logo} alt='NotFound' style={{width:'30vw'}} fluid  />
+					<Image src={Logo} alt='NotFound' style={{width:'25vw'}} fluid  />
 				</div>
 			</div>
 		);
@@ -16,7 +16,7 @@ class Header extends Component {
 export default Header;
 const styles = {
 	logo: {
-		backgroundColor: '#F3EBDE',
+		backgroundColor: '#2a2922',
 		height: '100%',
 		
 	}

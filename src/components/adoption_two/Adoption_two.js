@@ -212,7 +212,7 @@ class Adoption_Two extends Component {
 			//console.log(this.state.parsed)
 			//console.log(this.state.results)
 		return (
-			<div className='container-fluid w-100 mt-3'>
+			<div className=' w-100 mt-3'>
 				<div className='row justify-content-center'>
 					<Form
 						className='form-inline needs-validation'
@@ -260,7 +260,14 @@ class Adoption_Two extends Component {
 						</div>
 					</Form>
 				</div>
-				<div className='container w-100 mt-5 shadow-lg' style={{ background: '#ffffff' }}>
+				<div className=' w-100 mt-5 shadow-lg' style={{ background: '#ffffff' }}>
+				{this.state.isHidden &&  (
+							<div style={{height:400}}>
+							<h1 className='text-center'>Find pets around you</h1>
+							</div>
+						)}
+
+
 				{!this.state.isHidden &&  (
 							
 							this.textHeader()
