@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import NotFound from '../../imgs/imgNotFound.png';
 import AnimalPage from './AnimalPage';
-import Modal from 'react-bootstrap/Modal';
+
 
 class AdoptionList extends Component{
 	constructor(props) {
@@ -19,7 +19,7 @@ class AdoptionList extends Component{
     
     getSelected=(y)=>{
       this.setState({select:y});
-      this.openModalHandler()
+    
     }
 
 
