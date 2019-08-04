@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Footer from '../footer/Footer.js';
 import Navhead from "../../components/nav/Navhead";
-
+import About from '../about/About.js';
 import { BrowserRouter as Router, Route,Switch } from "react-router-dom"
 import Home from '../../components/home/Home'
 import Header from '../../components/header/Header';
@@ -22,6 +22,7 @@ class Main extends Component {
              
             <Route exact={true} path="/" component={Home} />
             <Route path="/adoption" component={Adoption_Two} />
+            <Route path='/about' component={About}/>
             
           </Switch>
             
@@ -29,6 +30,7 @@ class Main extends Component {
             @import
             url('https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap');
           </style>
+          
         </Router>
         <div>
 			<Footer/>

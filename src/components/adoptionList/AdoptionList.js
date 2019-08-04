@@ -1,24 +1,36 @@
 import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 import NotFound from '../../imgs/imgNotFound.png';
+import AnimalPage from './AnimalPage';
+import Modal from 'react-bootstrap/Modal';
 
 class AdoptionList extends Component{
 	constructor(props) {
 		super(props);
 		this.state={
 			data: this.props.results,
-			loc: this.props.city
-		}
-	}
+            loc: this.props.city, 
+            select:[],
+  
+        }
+     
+    }
+    
+    getSelected=(y)=>{
+      this.setState({select:y});
+      this.openModalHandler()
+    }
+
 
 
     render() {
 		
 
         const options = this.props.results.animals;
-
-        const listItems = options.map(options => (
         
+        const listItems = options.map(options => (
+            
             <Card
                 className='card mx-3 my-3 '
                 style={{ maxWidth: '18rem' }}
@@ -63,21 +75,16 @@ class AdoptionList extends Component{
                     </Card.Text>
                     <Card.Text className=''>{options.size}</Card.Text>
                 </Card.Body>
-                <button className='btn btn-primary' href='/'>Learn more</button>
+                <Button className='btn btn-primary' onClick={()=>this.getSelected(options)}> <AnimalPage className='modal' show={this.state.isShowing} data={this.state.select}/> Learn more</Button>
             </Card>
             
         ));
+// I attempted to create a modal dialog box to display the information for the selected Animal. But i could not figure it out. The data is retrieved and stored to the state. but i could not
+//figure out how to create a modal box of a generated component into another component. I would greatly appreciate it if you can help me.
+
         return (
             <div>
-			<div className='row'>
-				<div className='col-md-4' >
-					
-					</div>	
 
-				<div className='col-md-4' />
-
-				<div className='col-md-4' />
-			</div>
 			<div className='row justify-content-center pt-5'>{listItems}</div>
 		</div>
         )

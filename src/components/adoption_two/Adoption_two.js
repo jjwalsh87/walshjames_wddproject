@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios'
+import axios from 'axios';
 import AdoptionList from '../adoptionList/AdoptionList';
 import Form from 'react-bootstrap/Form';
 import { Client } from '@petfinder/petfinder-js';
-import CircularProgress from "@material-ui/core/CircularProgress";
-
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const client = new Client({
 	apiKey: 'uKX6d6UO4fV4VN9ujlSAFSOjCC2zXyG0tZShjTzSTaqhOM4XV2',
@@ -32,35 +30,34 @@ class Adoption_Two extends Component {
 		this.handleDisChange = this.handleDisChange.bind(this);
 	}
 
-	componentWillMount() {
+	componentWillMount=()=> {
 		const breedsData = localStorage.getItem('breedsData') === 'true';
-		
-		if(breedsData){
-			localStorage.getItem(breedsData)
-			this.setState({breeds: breedsData})
-		}else
 
-		this.loadData();
-
+		if (breedsData) {
+			localStorage.getItem(breedsData);
+			this.setState({ breeds: breedsData });
+		} else this.loadData();
 	}
-
-	loadData() {
+	// Get breeds from Petfinder API to populate select list
+	loadData=()=> {
 		client.animalData
 			.breeds('dog')
 			.then(response => this.setState({ breeds: response.data.breeds }))
-			.then(()=>{if(localStorage.getItem('breedsData')===null){
-				localStorage.setItem('breedsData', JSON.stringify(this.state.breeds))
-			}})
+			.then(() => {
+				if (localStorage.getItem('breedsData') === null) {
+					localStorage.setItem('breedsData', JSON.stringify(this.state.breeds));
+				}
+			})
 			.catch(error => {
 				console.log(error);
 			});
 	}
-	handleChange(event) {
+	handleChange=(event)=> {
 		this.setState({ value: event.target.value });
 	}
 
-	getSearch() {
-		
+	//Get search values from state and send to petfinder API and return breed results by type distance
+	getSearch=()=> {
 		client.animal
 			.search({
 				breed: this.state.value,
@@ -69,19 +66,17 @@ class Adoption_Two extends Component {
 				limit: 100
 			})
 			.then(resp => this.setState({ results: resp.data, data: resp }))
-			
 
 			.catch(error => {
 				console.log(error, 'missing data');
 			});
-			
-	}
-	toggleActive() {
+	} //activate hidded boolean
+	toggleActive=()=> {
 		if (!this.state.isHidden) {
 			this.setState({ isHidden: this.state.isHidden });
 		}
-	}
-	toggleHidden() {
+	} // disable hidden bool
+	toggleHidden=()=> {
 		if (!this.state.isHidden) {
 			this.setState({ isHidden: this.state.isHidden });
 		} else if (
@@ -93,24 +88,24 @@ class Adoption_Two extends Component {
 				this.setState({
 					isHidden: !this.state.isHidden
 				});
-				this.getCity()
+				this.getCity();
 				this.reset();
-				return(
-					        <CircularProgress
-          style={{
-            width: 22,
-            height: 22
-          }}
-        />
-				)
+				return (
+					<CircularProgress
+						style={{
+							width: 22,
+							height: 22
+						}}
+					/>
+				);
 			}, 2000);
 		} else {
-			
 			this.toggleActive();
 		}
 	}
 
-	handleSubmit(event) {
+	// handles submit function
+	handleSubmit=(event)=> {
 		event.preventDefault();
 		if (
 			!this.isValid(this.state.zip) === false &&
@@ -119,98 +114,95 @@ class Adoption_Two extends Component {
 		) {
 			this.getSearch();
 			this.getCity();
-			
+
 			this.toggleActive();
-			
-			
 		} else {
 			alert('Missing search inputs');
 		}
 
 		//alert('you selected ' + this.state.value);
 	}
-	getCity(){
-		
-		axios.get('https://maps.googleapis.com/maps/api/geocode/json?address='+this.state.zip+'&key=AIzaSyA-SBoup2C5ybGCwC66tp9ln9_XMODxxRA')
-		.then(resp=>{this.setState({address:resp.data})})
-		.catch(err=>{
-			console.log(err)
-			//console.log(err.resp.data.error)
-		}).then(()=>{
-			let parsed = []
-			if(this.state.address !== null){
-				let res = this.state.address
-			for(let i=0; i< res.results[0].address_components.length; i++){
-				parsed.push(res.results[0].address_components[i].short_name)
-				
-				
+
+	// gets city from googles API
+	getCity=()=> {
+		axios
+			.get(
+				'https://maps.googleapis.com/maps/api/geocode/json?address=' +
+					this.state.zip +
+					'&key=AIzaSyA-SBoup2C5ybGCwC66tp9ln9_XMODxxRA'
+			)
+			.then(resp => {
+				this.setState({ address: resp.data });
+			})
+			.catch(err => {
+				console.log(err);
+				//console.log(err.resp.data.error)
+			})
+			.then(() => {
+				let parsed = [];
+				if (this.state.address !== null) {
+					let res = this.state.address;
+					for (let i = 0; i < res.results[0].address_components.length; i++) {
+						parsed.push(res.results[0].address_components[i].short_name);
+					}
+					console.log(parsed);
+					this.setState({ parsed: parsed });
+				} else console.log('nothing');
+			});
+	}
+	//Parses return from google API to return ZIP
+	parseData=()=> {
+		let parsed = [];
+		if (this.state.address !== null) {
+			let res = this.state.address;
+			for (let i = 0; i < res.results[0].address_components.length; i++) {
+				parsed.push(res.results[0].address_components[i].short_name);
 			}
-				console.log(parsed)
-				this.setState({parsed: parsed})
-				
-			}else(console.log('nothing'))
-		})
-		
-	
-		
+			console.log(parsed);
+			this.setState({ parsed: parsed });
+		} else console.log('nothing');
 	}
-	parseData(){
-			let parsed = []
-		if(this.state.address !== null){
-			let res = this.state.address
-		for(let i=0; i< res.results[0].address_components.length; i++){
-			parsed.push(res.results[0].address_components[i].short_name)
-			
-			
-		}
-			console.log(parsed)
-			this.setState({parsed: parsed})
-			
-		}else(console.log('nothing'))
-		
-	}
-	handleZipChange(event) {
+	handleZipChange=(event)=> {
 		this.setState({ zip: event.target.value });
 	}
-	handleDisChange(event) {
+	handleDisChange=(event)=> {
 		this.setState({ distance: event.target.value });
 	}
-	isValid(sZip) {
+	isValid=(sZip)=> {
 		return /^\d{5}(-\d{4})?$/.test(sZip);
 	}
-	reset() {
+	reset=()=> {
 		this.myFormRef.reset();
 	}
-	textHeader(){
-		const total= this.state.results.pagination.total_count;
-		const value= this.state.value;
-		const distance= this.state.distance;
+	// renders information to page.
+	textHeader=()=> {
+		const total = this.state.results.pagination.total_count;
 		const city = this.state.parsed[1];
-		const state= this.state.parsed[2]
+		const state = this.state.parsed[2];
 
-		
 		return (
 			<div>
-				<h1 >We found {total} dogs around {city}, {state} </h1>
+				<h1>
+					We found {total} dogs around {city}, {state}{' '}
+				</h1>
 			</div>
-		)
-	
-}
+		);
+	}
 
 	render() {
 		if (!this.state.breeds) {
 			return <div />;
 		}
-		
+
 		let breeds = this.state.breeds;
 		let options = breeds.map(breeds => (
 			<option key={breeds.name} value={breeds.name}>
 				{breeds.name}
 			</option>
 		));
-		
-			//console.log(this.state.parsed)
-			//console.log(this.state.results)
+
+		//console.log(this.state.parsed)
+		//console.log(this.state.results)
 		return (
 			<div className=' w-100 mt-3'>
 				<div className='row justify-content-center'>
@@ -260,26 +252,23 @@ class Adoption_Two extends Component {
 						</div>
 					</Form>
 				</div>
-				<div className=' w-100 mt-5 shadow-lg' style={{ background: '#ffffff' }}>
-				{this.state.isHidden &&  (
-							<div style={{height:400}}>
+				<div
+					className=' w-100 mt-5 shadow-lg'
+					style={{ background: '#ffffff' }}>
+					{this.state.isHidden && (
+						<div style={{ height: 400 }}>
 							<h1 className='text-center'>Find pets around you</h1>
-							</div>
-						)}
+						</div>
+					)}
 
+					{!this.state.isHidden && this.textHeader()}
 
-				{!this.state.isHidden &&  (
-							
-							this.textHeader()
-							
-						)}
-					
-					{!this.state.isHidden &&  (
-							
-							<AdoptionList results={this.state.results} city={this.state.address} />
-						)}
-
-					
+					{!this.state.isHidden && (
+						<AdoptionList
+							results={this.state.results}
+							city={this.state.address}
+						/>
+					)}
 				</div>
 			</div>
 		);

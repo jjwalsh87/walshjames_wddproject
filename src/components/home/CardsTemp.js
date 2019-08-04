@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
 import Image from 'react-bootstrap/Image';
 import DogHead from '../../imgs/doghead.jpg';
+import Media from 'react-bootstrap/Media';
 
 class CardsTemp extends Component {
 	render() {
@@ -32,15 +33,15 @@ class CardsTemp extends Component {
 				<Card.Body
 					style={styles.actionBody}
 					className='row justify-content-center'>
-					<Card.Link style={styles.actionButton1} className='col-md-4'>
-						<a href='#' style={styles.actionText1}>
+					<Card.Link href='#' style={styles.actionButton1} className='col-md-4'>
+						
 							ACTION 1
-						</a>
+						
 					</Card.Link>
-					<Card.Link style={styles.actionButton2} className='col-md-4'>
-						<a href='#' style={styles.actionText2}>
+					<Card.Link href='#' style={styles.actionButton2} className='col-md-4'>
+						
 							ACTION 2
-						</a>
+						
 					</Card.Link>
 				</Card.Body>
 			</Card>

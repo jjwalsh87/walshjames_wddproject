@@ -30,7 +30,7 @@ export default Home;
 const styles = ({
 	root: {
 	  
-	  backgroundColor: "rgb(255,255,255)",
+	  backgroundColor: '#ffffff',
 	  
 	},
 	spaceHr:{
