@@ -32,7 +32,7 @@ class Main extends Component {
           </style>
           
         </Router>
-        <div>
+        <div> 
 			<Footer/>
 			</div>
       </div>
